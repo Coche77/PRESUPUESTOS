@@ -12,7 +12,7 @@
         .container { max-width: 1100px; background: white; padding: 50px; border-radius: 4px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
         
         .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .logo-area img { max-width: 200px; height: auto; }
+        .logo-area img { max-width: 220px; height: auto; }
         
         .presupuesto-banner {
             background: #002366; color: white; padding: 15px 40px; margin: 0 -50px 30px -50px;
@@ -35,7 +35,6 @@
 
         .intro-area textarea { width: 100%; padding: 15px; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 4px; font-size: 14px; min-height: 80px; font-family: inherit; margin-bottom: 20px; box-sizing: border-box; resize: vertical; }
 
-        /* TABLA Y BOTÓN ELIMINAR */
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th { background: #f8f9fa; color: #002366; padding: 12px; font-size: 11px; border-bottom: 2px solid #002366; text-align: left; }
         td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: top; position: relative; }
@@ -52,6 +51,16 @@
 
         .fila-especialidad { background-color: #f1f3f5 !important; }
         .fila-especialidad input { font-weight: bold; color: #002366; text-transform: uppercase; letter-spacing: 1px; width: 100%; }
+
+        /* RESUMEN ESTILO EXCEL */
+        .resumen-container {
+            margin-top: 30px; background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 4px;
+        }
+        .resumen-header {
+            background: #d9e1f2; color: #002366; padding: 10px; font-weight: bold; text-align: center; 
+            text-transform: uppercase; margin-bottom: 15px; border: 1px solid #8ea9db;
+        }
+        .resumen-fila { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
 
         .totals-container { margin-top: 40px; display: flex; justify-content: space-between; gap: 40px; }
         .notes-area { width: 60%; }
@@ -70,8 +79,9 @@
 <body onload="cargarTodo()">
 
 <div class="container">
-    <div class="logo-area"><img src="logo.jpg" id="imgLogo" alt="Logo" crossorigin="anonymous"></div>
-         <div class="db-selector" style="width: 50%;">
+    <div class="header-top">
+        <div class="logo-area"><img src="logo.jpg" id="imgLogo" alt="Logo" crossorigin="anonymous"></div>
+        <div class="db-selector" style="width: 50%;">
             <span>🔍 Cliente:</span>
             <select id="selectCliente" onchange="autoLlenarCliente()" style="width: 100%; border: none; background: transparent; font-weight: bold;">
                 <option value="">-- Buscar en Base de Datos --</option>
@@ -120,6 +130,11 @@
     <div style="margin-top: 15px;">
         <button class="btn-action" onclick="agregarSeparador(); autoGuardar();">+ Especialidad</button>
         <button class="btn-action btn-add-item" onclick="agregarFila(); autoGuardar();">+ Concepto</button>
+    </div>
+
+    <div id="resumenSeccion" class="resumen-container" style="display: none;">
+        <div class="resumen-header">Resumen de Partidas</div>
+        <div id="resumenLista"></div>
     </div>
 
     <div class="totals-container">
@@ -196,10 +211,7 @@
     }
 
     function eliminarFila(btn) {
-        if(confirm("¿Eliminar este concepto?")) {
-            btn.closest('tr').remove();
-            autoGuardar();
-        }
+        if(confirm("¿Eliminar este concepto?")) { btn.closest('tr').remove(); autoGuardar(); }
     }
 
     function agregarSeparador(val = "") {
@@ -223,10 +235,16 @@
 
     function recalcular() {
         let totalG = 0; let subE = 0; let filaE = null;
+        let datosResumen = [];
         const fmt = (v) => v.toLocaleString('en-US', {minimumFractionDigits: 2});
+
         for (let f of document.getElementById("cuerpoTabla").rows) {
             if (f.classList.contains("fila-especialidad")) {
-                if (filaE) filaE.querySelector(".sub-esp").innerText = "$ " + fmt(subE);
+                if (filaE) {
+                    let nom = filaE.querySelector("input").value || "Sin Nombre";
+                    filaE.querySelector(".sub-esp").innerText = "$ " + fmt(subE);
+                    datosResumen.push({ n: nom, m: subE });
+                }
                 filaE = f; subE = 0;
             } else {
                 let c = parseFloat(f.querySelector(".cant").value) || 0;
@@ -235,7 +253,20 @@
                 subE += imp; totalG += imp;
             }
         }
-        if (filaE) filaE.querySelector(".sub-esp").innerText = "$ " + fmt(subE);
+        if (filaE) {
+            let nom = filaE.querySelector("input").value || "Sin Nombre";
+            filaE.querySelector(".sub-esp").innerText = "$ " + fmt(subE);
+            datosResumen.push({ n: nom, m: subE });
+        }
+
+        // Mostrar Resumen
+        const resDiv = document.getElementById("resumenSeccion");
+        const resLista = document.getElementById("resumenLista");
+        if (datosResumen.length > 0) {
+            resDiv.style.display = "block";
+            resLista.innerHTML = datosResumen.map(d => `<div class="resumen-fila"><span>${d.n.toUpperCase()}</span><strong>$ ${fmt(d.m)}</strong></div>`).join("");
+        } else { resDiv.style.display = "none"; }
+
         document.getElementById('subtotalDisplay').innerText = "$ " + fmt(totalG);
         document.getElementById('ivaDisplay').innerText = "$ " + fmt(totalG * 0.16);
         document.getElementById('totalDisplay').innerText = "$ " + fmt(totalG * 1.16);
@@ -264,7 +295,7 @@
         reader.readAsText(event.target.files[0]);
     }
 
-    function limpiarFormulario() { if(confirm("¿Limpiar todo el formulario?")) { localStorage.removeItem('cotizador_persistente'); location.reload(); } }
+    function limpiarFormulario() { if(confirm("¿Limpiar todo?")) { localStorage.removeItem('cotizador_persistente'); location.reload(); } }
 
     async function generarPDF() {
         const { jsPDF } = window.jspdf;
@@ -272,26 +303,14 @@
         const logo = document.getElementById('imgLogo');
         const fmt = (v) => v.toLocaleString('en-US', {minimumFractionDigits:2});
 
+        // Banner Superior
         doc.setFillColor(0, 35, 102); doc.rect(0, 40, 210, 15, 'F');
         doc.setFillColor(212, 175, 55); doc.rect(200, 40, 10, 15, 'F');
         doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
         doc.text("PRESUPUESTO", 15, 50);
 
-        // ... líneas anteriores de la función generarPDF ...
-        doc.text("PRESUPUESTO", 15, 50);
+        try { if (logo.complete) doc.addImage(logo, 'JPEG', 135, 10, 60, 24); } catch (e) {}
 
-        try { 
-            if (logo.complete) {
-                // 135 es la posición X (lo mueve un poco a la izquierda para centrarlo mejor)
-                // 10 es la posición Y (altura desde el tope)
-                // 60 es el ANCHO (antes era 45)
-                // 24 es el ALTO (antes era 18)
-                doc.addImage(logo, 'JPEG', 135, 10, 60, 24); 
-            }
-        } catch (e) { console.error("Error al cargar logo:", e); }
-
-        doc.setTextColor(100, 100, 100); doc.setFontSize(9);
-// ... resto del código ...
         doc.setTextColor(100, 100, 100); doc.setFontSize(9);
         doc.text(`${document.getElementById('lugar').value}, a ${document.getElementById('fecha').value}`, 195, 35, { align: "right" });
 
@@ -319,7 +338,24 @@
             styles: { fontSize: 7, cellPadding: 3 }, columnStyles: { 4: { halign: 'right' }, 5: { halign: 'right' } }
         });
 
+        // SECCIÓN DE RESUMEN EN PDF (Estilo Excel)
         let finalY = doc.lastAutoTable.finalY + 15;
+        doc.setFillColor(217, 225, 242); doc.rect(15, finalY, 180, 8, 'F');
+        doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 35, 102);
+        doc.text("RESUMEN DE PARTIDAS", 105, finalY + 6, { align: "center" });
+        
+        let yRes = finalY + 15;
+        doc.setFontSize(9); doc.setTextColor(0, 0, 0);
+        for(let tr of document.getElementById("cuerpoTabla").rows) {
+            if(tr.classList.contains("fila-especialidad")) {
+                doc.setFont("helvetica", "bold"); doc.text(tr.querySelector("input").value.toUpperCase(), 20, yRes);
+                doc.setFont("helvetica", "normal"); doc.text(tr.querySelector(".sub-esp").innerText, 190, yRes, { align: "right" });
+                yRes += 7;
+            }
+        }
+
+        // Notas y Totales
+        finalY = yRes + 10;
         doc.setFontSize(9); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 35, 102);
         doc.text("NOTAS Y CONDICIONES:", 15, finalY);
         doc.setFont("helvetica", "normal"); doc.setTextColor(80, 80, 80);
