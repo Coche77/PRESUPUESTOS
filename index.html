@@ -277,8 +277,21 @@
         doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.setFont("helvetica", "bold");
         doc.text("PRESUPUESTO", 15, 50);
 
-        try { if (logo.complete) doc.addImage(logo, 'JPEG', 150, 12, 45, 18); } catch (e) {}
+        // ... líneas anteriores de la función generarPDF ...
+        doc.text("PRESUPUESTO", 15, 50);
 
+        try { 
+            if (logo.complete) {
+                // 135 es la posición X (lo mueve un poco a la izquierda para centrarlo mejor)
+                // 10 es la posición Y (altura desde el tope)
+                // 60 es el ANCHO (antes era 45)
+                // 24 es el ALTO (antes era 18)
+                doc.addImage(logo, 'JPEG', 135, 10, 60, 24); 
+            }
+        } catch (e) { console.error("Error al cargar logo:", e); }
+
+        doc.setTextColor(100, 100, 100); doc.setFontSize(9);
+// ... resto del código ...
         doc.setTextColor(100, 100, 100); doc.setFontSize(9);
         doc.text(`${document.getElementById('lugar').value}, a ${document.getElementById('fecha').value}`, 195, 35, { align: "right" });
 
