@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Twin Oaks - Sistema Integral</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="datos.js"></script>
+    
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 1100px; background: white; padding: 50px; border-radius: 4px; margin: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .logo-area img { max-width: 220px; height: auto; }
+        .presupuesto-banner {
+            background: #002366; color: white; padding: 15px 40px; margin: 0 -50px 30px -50px;
+            display: flex; justify-content: space-between; align-items: center; border-right: 12px solid #d4af37;
+        }
+        .presupuesto-banner h1 { margin: 0; font-size: 28px; letter-spacing: 6px; text-transform: uppercase; font-weight: 300; }
+        .date-info { text-align: right; font-size: 13px; }
+        .date-info input { border: none; background: transparent; color: white; text-align: right; width: 220px; font-family: inherit; }
+        .db-selector { background: #e9ecef; padding: 10px 15px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid #17a2b8; display: flex; align-items: center; gap: 10px; }
+        .draft-system { display: flex; gap: 10px; margin-bottom: 25px; }
+        .btn { padding: 8px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 11px; text-transform: uppercase; color: white; }
+        .btn-save { background: #17a2b8; }
+        .btn-load { background: #ffc107; color: black; }
+        .btn-clear { background: #dc3545; }
+        .grid-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .grid-inputs label { font-size: 11px; font-weight: bold; color: #002366; text-transform: uppercase; display: block; margin-bottom: 5px; }
+        .grid-inputs input { width: 100%; padding: 8px 0; border: none; border-bottom: 1px solid #ddd; font-size: 14px; outline: none; }
+        .intro-area textarea { width: 100%; padding: 15px; border: 1px solid #f0f0f0; background: #fafafa; border-radius: 4px; font-size: 14px; min-height: 80px; font-family: inherit; margin-bottom: 20px; box-sizing: border-box; resize: vertical; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
+        th { background: #f8f9fa; color: #002366; padding: 12px; font-size: 11px; border-bottom: 2px solid #002366; text-align: left; }
+        td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: top; }
+        .btn-delete-row { background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; opacity: 0.3; transition: 0.3s; }
+        tr:hover .btn-delete-row { opacity: 1; }
+        textarea.concepto-input { width: 100%; border: none; background: transparent; font-size: 15px; resize: none; overflow: hidden; min-height: 25px; font-family: inherit; line-height: 1.4; }
+        input.table-input { width: 100%; border: none; background: transparent; font-family: inherit; font-size: 14px; }
+        .fila-especialidad { background-color: #f1f3f5 !important; }
+        .fila-especialidad input { font-weight: bold; color: #002366; text-transform: uppercase; letter-spacing: 1px; width: 100%; font-size: 16px; border: none; background: transparent; }
+        .imp { text-align: right; font-weight: bold; font-size: 14px; white-space: nowrap; color: #002366; }
+        .sub-esp { font-weight: bold; color: #002366; font-size: 15px; white-space: nowrap; }
+        .totals-container { margin-top: 40px; display: flex; justify-content: space-between; gap: 40px; }
+        .notes-area { width: 60%; }
+        .notes-area textarea { width: 100%; min-height: 110px; border: 1px solid #eee; padding: 10px; background: #fdfdfd; font-family: inherit; box-sizing: border-box; }
+        .totals-box { width: 35%; display: flex; flex-direction: column; }
+        .total-row { display: flex; justify-content: space-between; padding: 10px 0; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+        .grand-total { border-top: 2px solid #002366; padding-top: 15px; color: #002366; font-size: 24px; font-weight: bold; }
+        .btn-pdf { background: #002366; color: white; width: 100%; padding: 18px; border: none; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 40px; letter-spacing: 2px; text-transform: uppercase; }
+        .btn-action { padding: 8px 15px; background: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; font-weight: bold; margin-top: 10px; }
+    </style>
+</head>
+<body onload="cargarTodo()">
+
+<div class="container">
+    <div class="header-top">
+        <div class="logo-area"><img src="logo.jpg" id="imgLogo" alt="Logo" crossorigin="anonymous"></div>
+        <div class="db-selector" style="width: 50%;">
+            <span>🔍 Cliente:</span>
+            <select id="selectCliente" onchange="autoLlenarCliente()" style="width: 100%; border: none; background: transparent; font-weight: bold;">
+                <option value="">-- Buscar en Base de Datos --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="presupuesto-banner">
+        <h1>Presupuesto</h1>
+        <div class="date-info">
+            <input type="text" id="lugar" oninput="autoGuardar()" value="San Pedro Garza García, N.L."><br>
+            <input type="text" id="fecha" oninput="autoGuardar()">
+        </div>
+    </div>
+
+    <div class="draft-system">
+        <button class="btn btn-save" onclick="descargarBorrador()">💾 Guardar Borrador</button>
+        <button class="btn btn-load" onclick="document.getElementById('inputCargar').click()">📂 Cargar Borrador</button>
+        <input type="file" id="inputCargar" style="display:none" onchange="cargarArchivoBorrador(event)" accept=".json">
+        <button class="btn btn-clear" onclick="limpiarFormulario()">🗑️ Limpiar Todo</button>
+    </div>
+
+    <div class="grid-inputs">
+        <div><label>Proyecto</label><input type="text" id="proyecto" oninput="autoGuardar()"></div>
+        <div><label>Ubicación</label><input type="text" id="ubicacion" oninput="autoGuardar()"></div>
+        <div style="grid-column: span 2;"><label>Atención a:</label><input type="text" id="atencion" oninput="autoGuardar()"></div>
+    </div>
+
+    <div class="intro-area"><textarea id="textoIntro" oninput="autoGuardar()" placeholder="Saludo inicial..."></textarea></div>
+
+    <table id="tablaItems">
+        <thead>
+            <tr>
+                <th style="width:12%">CLAVE</th>
+                <th style="width:36%">CONCEPTO</th>
+                <th style="width:10%">UNIDAD</th>
+                <th style="width:8%">CANT.</th>
+                <th style="width:12%">P. UNIT.</th>
+                <th style="width:17%">IMPORTE</th>
+                <th style="width:5%"></th>
+            </tr>
+        </thead>
+        <tbody id="cuerpoTabla"></tbody>
+    </table>
+
+    <div style="margin-top: 15px;">
+        <button class="btn-action" onclick="agregarSeparador(); autoGuardar();">+ Especialidad</button>
+        <button class="btn-action" style="background:#28a745" onclick="agregarFila(); autoGuardar();">+ Concepto</button>
+    </div>
+
+    <div id="resumenSeccion" style="display: none; margin-top: 30px; background: #fdfdfd; border: 1px solid #eee; padding: 25px; border-radius: 4px;">
+        <div style="background: #d9e1f2; color: #002366; padding: 10px; font-weight: bold; text-align: center; text-transform: uppercase; margin-bottom: 15px; border: 1px solid #8ea9db;">Resumen de Partidas</div>
+        <div id="resumenLista"></div>
+    </div>
+
+    <div class="totals-container">
+        <div class="notes-area">
+            <label style="font-weight: bold; font-size: 12px; color: #002366;">NOTAS ADICIONALES Y CONDICIONES:</label>
+            <textarea id="notasAdicionales" oninput="autoGuardar()" placeholder="Vigencia, tiempos de entrega..."></textarea>
+        </div>
+        <div class="totals-box">
+            <div class="total-row"><span>SUBTOTAL</span><span id="subtotalDisplay">$ 0.00</span></div>
+            <div class="total-row"><span>HONORARIOS</span><span id="honorariosDisplay">$ 0.00</span></div>
+            <div class="total-row"><span>IVA (16%)</span><span id="ivaDisplay">$ 0.00</span></div>
+            <div class="total-row grand-total"><span>TOTAL</span><span id="totalDisplay">$ 0.00</span></div>
+        </div>
+    </div>
+
+    <button class="btn-pdf" onclick="generarPDF()">GENERAR PDF FINAL</button>
+</div>
+
+<script>
+    function ajustarAltura(el) { el.style.height = "auto"; el.style.height = el.scrollHeight + "px"; }
+
+    function cargarTodo() {
+        const select = document.getElementById('selectCliente');
+        if (typeof CLIENTES_REGISTRADOS !== 'undefined') {
+            CLIENTES_REGISTRADOS.forEach((c, index) => {
+                let opt = document.createElement('option');
+                opt.value = index; opt.innerHTML = c.nombre + " (" + (c.proyecto || 'General') + ")";
+                select.appendChild(opt);
+            });
+        }
+        const guardado = localStorage.getItem('cotizador_persistente');
+        if (guardado) { aplicarDatos(JSON.parse(guardado)); } 
+        else {
+            const hoy = new Date();
+            document.getElementById('fecha').value = hoy.toLocaleDateString('es-MX', { day: '2-digit', month: 'long', year: 'numeric' });
+        }
+    }
+
+    function autoGuardar() {
+        const datos = extraerDatosPantalla();
+        localStorage.setItem('cotizador_persistente', JSON.stringify(datos));
+        recalcular();
+    }
+
+    function extraerDatosPantalla() {
+        const datos = {
+            lugar: document.getElementById('lugar').value, fecha: document.getElementById('fecha').value,
+            proyecto: document.getElementById('proyecto').value, ubicacion: document.getElementById('ubicacion').value,
+            atencion: document.getElementById('atencion').value, intro: document.getElementById('textoIntro').value,
+            notas: document.getElementById('notasAdicionales').value, filas: []
+        };
+        for (let f of document.getElementById("cuerpoTabla").rows) {
+            if (f.classList.contains("fila-especialidad")) {
+                datos.filas.push({ tipo: 'esp', v: f.querySelector("input").value });
+            } else {
+                let i = f.querySelectorAll("input, textarea");
+                datos.filas.push({ tipo: 'con', v: [i[0].value, i[1].value, i[2].value, i[3].value, i[4].value] });
+            }
+        }
+        return datos;
+    }
+
+    function aplicarDatos(d) {
+        document.getElementById('lugar').value = d.lugar || ""; 
+        document.getElementById('fecha').value = d.fecha || "";
+        document.getElementById('proyecto').value = d.proyecto || ""; 
+        document.getElementById('ubicacion').value = d.ubicacion || "";
+        document.getElementById('atencion').value = d.atencion || ""; 
+        document.getElementById('textoIntro').value = d.intro || "";
+        document.getElementById('notasAdicionales').value = d.notas || "";
+        document.getElementById("cuerpoTabla").innerHTML = "";
+        if(d.filas) d.filas.forEach(f => f.tipo === 'esp' ? agregarSeparador(f.v) : agregarFila(f.v));
+        recalcular();
+    }
+
+    function eliminarFila(btn) { if(confirm("¿Eliminar?")) { btn.closest('tr').remove(); autoGuardar(); } }
+
+    function agregarSeparador(val = "") {
+        let row = document.getElementById("cuerpoTabla").insertRow();
+        row.className = "fila-especialidad";
+        row.innerHTML = `<td colspan="5"><input type="text" oninput="autoGuardar()" value="${val}" placeholder="SECCIÓN"></td><td class="sub-esp" style="text-align:right">$ 0.00</td><td><button class="btn-delete-row" onclick="eliminarFila(this)">×</button></td>`;
+    }
+
+    function agregarFila(v = ["","","","0","0"]) {
+        let row = document.getElementById("cuerpoTabla").insertRow();
+        row.innerHTML = `<td><input type="text" class="table-input" oninput="autoGuardar()" value="${v[0]}"></td><td><textarea class="concepto-input" oninput="ajustarAltura(this); autoGuardar()">${v[1]}</textarea></td><td><input type="text" class="table-input" oninput="autoGuardar()" value="${v[2]}"></td><td><input type="number" class="table-input cant" value="${v[3]}" oninput="autoGuardar()"></td><td><input type="number" class="table-input precio" value="${v[4]}" oninput="autoGuardar()"></td><td class="imp">$ 0.00</td><td><button class="btn-delete-row" onclick="eliminarFila(this)">×</button></td>`;
+        setTimeout(() => ajustarAltura(row.querySelector('textarea')), 10);
+    }
+
+    function recalcular() {
+        let totalPartidas = 0, montoHon = 0, subE = 0, filaE = null, esHonEsp = false;
+        let datosResumen = [];
+        const fmt = (v) => v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+        for (let f of document.getElementById("cuerpoTabla").rows) {
+            if (f.classList.contains("fila-especialidad")) {
+                if (filaE && !esHonEsp) datosResumen.push({ n: (filaE.querySelector("input").value || "S/N").toUpperCase(), m: subE });
+                if (filaE) filaE.querySelector(".sub-esp").innerText = "$ " + fmt(subE);
+                filaE = f; subE = 0;
+                let n = (f.querySelector("input").value || "").toUpperCase();
+                esHonEsp = n.includes("HONO") || n.includes("HONR");
+            } else {
+                let i = f.querySelectorAll("input, textarea");
+                let imp = (parseFloat(i[3].value)||0) * (parseFloat(i[4].value)||0);
+                f.querySelector(".imp").innerText = "$ " + fmt(imp);
+                if (esHonEsp || i[0].value.toUpperCase().includes("HONO") || i[0].value.toUpperCase().includes("HONR")) montoHon += imp;
+                else totalPartidas += imp;
+                subE += imp;
+            }
+        }
+        if (filaE) {
+            filaE.querySelector(".sub-esp").innerText = "$ " + fmt(subE);
+            if (!esHonEsp) datosResumen.push({ n: (filaE.querySelector("input").value || "S/N").toUpperCase(), m: subE });
+        }
+
+        document.getElementById("resumenSeccion").style.display = datosResumen.length ? "block" : "none";
+        document.getElementById("resumenLista").innerHTML = datosResumen.map(d => `<div style="display:flex; justify-content:space-between; padding:5px 0; border-bottom:1px solid #eee;"><span>${d.n}</span><strong>$ ${fmt(d.m)}</strong></div>`).join("");
+
+        let subG = totalPartidas + montoHon;
+        document.getElementById('subtotalDisplay').innerText = "$ " + fmt(totalPartidas);
+        document.getElementById('honorariosDisplay').innerText = "$ " + fmt(montoHon);
+        document.getElementById('ivaDisplay').innerText = "$ " + fmt(subG * 0.16);
+        document.getElementById('totalDisplay').innerText = "$ " + fmt(subG * 1.16);
+    }
+
+    async function generarPDF() {
+        const { jsPDF } = window.jspdf;
+        const doc = new jsPDF();
+        const logo = document.getElementById('imgLogo');
+        const fmt = (v) => v.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+        doc.setFillColor(0, 35, 102); doc.rect(0, 40, 210, 15, 'F');
+        doc.setFillColor(212, 175, 55); doc.rect(200, 40, 10, 15, 'F');
+        doc.setTextColor(255, 255, 255); doc.setFontSize(22); doc.text("PRESUPUESTO", 15, 50);
+        if (logo.complete) try { doc.addImage(logo, 'JPEG', 135, 10, 60, 24); } catch(e){}
+
+        doc.setTextColor(100); doc.setFontSize(9);
+        doc.text(`${document.getElementById('lugar').value}, a ${document.getElementById('fecha').value}`, 195, 35, { align: "right" });
+        doc.setTextColor(0, 35, 102); doc.setFontSize(10); doc.setFont("helvetica", "bold");
+        doc.text("PROYECTO: " + document.getElementById('proyecto').value.toUpperCase(), 15, 65);
+        doc.text("ATENCIÓN: " + document.getElementById('atencion').value.toUpperCase(), 15, 72);
+        doc.setTextColor(60); doc.setFont("helvetica", "normal");
+        const intro = doc.splitTextToSize(document.getElementById('textoIntro').value, 180);
+        doc.text(intro, 15, 82);
+
+        let bodyData = [];
+        for(let tr of document.getElementById("cuerpoTabla").rows) {
+            if(tr.classList.contains("fila-especialidad")) {
+                bodyData.push([{ content: tr.querySelector("input").value.toUpperCase(), colSpan: 5, styles: { fillColor:[240], fontStyle:'bold', halign:'center', textColor:[0,35,102] } }, { content: tr.querySelector(".sub-esp").innerText, styles: { fillColor:[240], fontStyle:'bold', halign:'right' } }]);
+            } else {
+                let i = tr.querySelectorAll("input, textarea");
+                let imp = (parseFloat(i[3].value)||0) * (parseFloat(i[4].value)||0);
+                bodyData.push([i[0].value, i[1].value, i[2].value, fmt(parseFloat(i[3].value)||0), "$ "+fmt(parseFloat(i[4].value)||0), "$ "+fmt(imp)]);
+            }
+        }
+
+        doc.autoTable({
+            startY: 100, head: [['CLAVE', 'CONCEPTO', 'UNIDAD', 'CANT.', 'P. UNIT.', 'IMPORTE']], body: bodyData,
+            theme: 'grid', headStyles: { fillColor: [0, 35, 102], fontSize: 8 },
+            styles: { fontSize: 7.5, overflow: 'linebreak' },
+            columnStyles: { 0:{cellWidth:15}, 4:{halign:'right'}, 5:{halign:'right', fontStyle:'bold'} },
+            rowPageBreak: 'auto'
+        });
+
+        let finalY = doc.lastAutoTable.finalY + 15;
+        if (finalY > 210) { doc.addPage(); finalY = 20; }
+
+        doc.setFillColor(217, 225, 242); doc.rect(15, finalY, 180, 8, 'F');
+        doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 35, 102);
+        doc.text("RESUMEN DE PARTIDAS", 105, finalY + 6, { align: "center" });
+        
+        let yRes = finalY + 15;
+        doc.setFontSize(9); doc.setTextColor(0);
+        for(let tr of document.getElementById("cuerpoTabla").rows) {
+            if(tr.classList.contains("fila-especialidad")) {
+                let n = tr.querySelector("input").value.toUpperCase();
+                if (!n.includes("HONO") && !n.includes("HONR")) {
+                    if (yRes > 275) { doc.addPage(); yRes = 20; }
+                    doc.setFont("helvetica", "bold"); doc.text(n, 20, yRes);
+                    doc.setFont("helvetica", "normal"); doc.text(tr.querySelector(".sub-esp").innerText, 190, yRes, { align: "right" });
+                    yRes += 7;
+                }
+            }
+        }
+
+        finalY = yRes + 10;
+        if (finalY > 240) { doc.addPage(); finalY = 20; }
+        doc.setFont("helvetica", "normal");
+        doc.text("SUBTOTAL:", 145, finalY); doc.text(document.getElementById('subtotalDisplay').innerText, 195, finalY, {align:'right'});
+        doc.text("HONORARIOS:", 145, finalY + 8); doc.text(document.getElementById('honorariosDisplay').innerText, 195, finalY + 8, {align:'right'});
+        doc.text("IVA (16%):", 145, finalY + 16); doc.text(document.getElementById('ivaDisplay').innerText, 195, finalY + 16, {align:'right'});
+        doc.setFillColor(0, 35, 102); doc.rect(143, finalY + 20, 55, 10, 'F');
+        doc.setTextColor(255); doc.setFont("helvetica", "bold");
+        doc.text("TOTAL:", 145, finalY + 26); doc.text(document.getElementById('totalDisplay').innerText, 195, finalY + 26, {align:'right'});
+
+        doc.save(`Presupuesto_${document.getElementById('proyecto').value || 'TwinOaks'}.pdf`);
+    }
+
+    function autoLlenarCliente() {
+        const i = document.getElementById('selectCliente').value;
+        if (i === "") return;
+        const c = CLIENTES_REGISTRADOS[i];
+        document.getElementById('atencion').value = c.nombre;
+        document.getElementById('proyecto').value = c.proyecto || "";
+        document.getElementById('ubicacion').value = c.ubicacion || "";
+        document.getElementById('textoIntro').value = c.introduccion || "";
+        autoGuardar();
+    }
+    function descargarBorrador() { const d = extraerDatosPantalla(); const blob = new Blob([JSON.stringify(d)], {type: 'application/json'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `Borrador_${d.proyecto || 'Presupuesto'}.json`; a.click(); }
+    function cargarArchivoBorrador(e) { const reader = new FileReader(); reader.onload = (ev) => aplicarDatos(JSON.parse(ev.target.result)); reader.readAsText(e.target.files[0]); }
+    function limpiarFormulario() { if(confirm("¿Limpiar?")) { localStorage.removeItem('cotizador_persistente'); location.reload(); } }
+</script>
+</body>
+</html>
