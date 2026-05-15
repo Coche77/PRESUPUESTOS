@@ -35,7 +35,7 @@
         .btn-delete-row { background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; opacity: 0.3; transition: 0.3s; }
         tr:hover .btn-delete-row { opacity: 1; }
         
-        /* CAMBIO AQUÍ: Se aumentó el tamaño de los conceptos */
+        /* Tamaño en pantalla aumentado */
         textarea.concepto-input { width: 100%; border: none; background: transparent; font-size: 18px; resize: none; overflow: hidden; min-height: 30px; font-family: inherit; line-height: 1.4; }
         
         input.table-input { width: 100%; border: none; background: transparent; font-family: inherit; font-size: 14px; }
@@ -268,11 +268,15 @@
             }
         }
 
+        /* AJUSTES AQUÍ: Se incrementó el tamaño de letra del PDF final para impresión */
         doc.autoTable({
-            startY: 100, head: [['CLAVE', 'CONCEPTO', 'UNIDAD', 'CANT.', 'P. UNIT.', 'IMPORTE']], body: bodyData,
-            theme: 'grid', headStyles: { fillColor: [0, 35, 102], fontSize: 8 },
-            styles: { fontSize: 7.5, overflow: 'linebreak' },
-            columnStyles: { 0:{cellWidth:15}, 4:{halign:'right'}, 5:{halign:'right', fontStyle:'bold'} },
+            startY: 100, 
+            head: [['CLAVE', 'CONCEPTO', 'UNIDAD', 'CANT.', 'P. UNIT.', 'IMPORTE']], 
+            body: bodyData,
+            theme: 'grid', 
+            headStyles: { fillColor: [0, 35, 102], fontSize: 11 }, // Subió de 8 a 11
+            styles: { fontSize: 10, overflow: 'linebreak' }, // Subió de 7.5 a 10 para lectura clara
+            columnStyles: { 0:{cellWidth:18}, 4:{halign:'right'}, 5:{halign:'right', fontStyle:'bold'} },
             rowPageBreak: 'auto'
         });
 
@@ -280,11 +284,11 @@
         if (finalY > 210) { doc.addPage(); finalY = 20; }
 
         doc.setFillColor(217, 225, 242); doc.rect(15, finalY, 180, 8, 'F');
-        doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 35, 102);
+        doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 35, 102);
         doc.text("RESUMEN DE PARTIDAS", 105, finalY + 6, { align: "center" });
         
         let yRes = finalY + 15;
-        doc.setFontSize(9); doc.setTextColor(0);
+        doc.setFontSize(10); doc.setTextColor(0);
         for(let tr of document.getElementById("cuerpoTabla").rows) {
             if(tr.classList.contains("fila-especialidad")) {
                 let n = tr.querySelector("input").value.toUpperCase();
