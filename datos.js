@@ -16,5 +16,11 @@ const CLIENTES_REGISTRADOS = [
         proyecto: "PROYECTO IG ANUNCIOS",
         ubicacion: "MONTERREY, N.L.",
         introduccion: "A la atención del equipo de IG ANUNCIOS SA DE CV; Presentamos a continuación la propuesta detallada según los requerimientos conversados previamente."
+     },
+    {
+        nombre: "JOSE MORERIA",
+        proyecto: "TITOS ALITAS ADICTIVAS",
+        ubicacion: "SAN PEDRO GARZA GARCIA,N.L.",
+        introduccionn: "A la atención del equipo de TITOS ALITAS ADITIVAS; Presentamos a continuación la propuesta detallada según los requerimientos conversados previamente."
     }
 ];
