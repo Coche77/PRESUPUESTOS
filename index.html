@@ -32,12 +32,15 @@
         table { width: 100%; border-collapse: collapse; margin-top: 10px; table-layout: fixed; }
         th { background: #f8f9fa; color: #002366; padding: 12px; font-size: 11px; border-bottom: 2px solid #002366; text-align: left; }
         td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: top; }
-        .btn-delete-row { background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; opacity: 0.3; transition: 0.3s; }
-        tr:hover .btn-delete-row { opacity: 1; }
         
-        /* Tamaño en pantalla aumentado */
-        textarea.concepto-input { width: 100%; border: none; background: transparent; font-size: 18px; resize: none; overflow: hidden; min-height: 30px; font-family: inherit; line-height: 1.4; }
+        /* Contenedor de acciones agrupadas */
+        .acciones-fila { display: flex; gap: 4px; align-items: center; justify-content: flex-end; opacity: 0.3; transition: 0.3s; }
+        tr:hover .acciones-fila { opacity: 1; }
         
+        .btn-delete-row { background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+        .btn-add-here { background: #28a745; color: white; border: none; border-radius: 50%; width: 22px; height: 22px; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+        
+        textarea.concepto-input { width: 100%; border: none; background: transparent; font-size: 15px; resize: none; overflow: hidden; min-height: 25px; font-family: inherit; line-height: 1.4; }
         input.table-input { width: 100%; border: none; background: transparent; font-family: inherit; font-size: 14px; }
         .fila-especialidad { background-color: #f1f3f5 !important; }
         .fila-especialidad input { font-weight: bold; color: #002366; text-transform: uppercase; letter-spacing: 1px; width: 100%; font-size: 16px; border: none; background: transparent; }
@@ -98,7 +101,7 @@
                 <th style="width:8%">CANT.</th>
                 <th style="width:12%">P. UNIT.</th>
                 <th style="width:17%">IMPORTE</th>
-                <th style="width:5%"></th>
+                <th style="width:7%"></th>
             </tr>
         </thead>
         <tbody id="cuerpoTabla"></tbody>
@@ -161,7 +164,7 @@
             lugar: document.getElementById('lugar').value, fecha: document.getElementById('fecha').value,
             proyecto: document.getElementById('proyecto').value, ubicacion: document.getElementById('ubicacion').value,
             atencion: document.getElementById('atencion').value, intro: document.getElementById('textoIntro').value,
-            notes: document.getElementById('notasAdicionales').value, filas: []
+            notas: document.getElementById('notasAdicionales').value, filas: []
         };
         for (let f of document.getElementById("cuerpoTabla").rows) {
             if (f.classList.contains("fila-especialidad")) {
@@ -181,7 +184,7 @@
         document.getElementById('ubicacion').value = d.ubicacion || "";
         document.getElementById('atencion').value = d.atencion || ""; 
         document.getElementById('textoIntro').value = d.intro || "";
-        document.getElementById('notasAdicionales').value = d.notes || "";
+        document.getElementById('notasAdicionales').value = d.notas || "";
         document.getElementById("cuerpoTabla").innerHTML = "";
         if(d.filas) d.filas.forEach(f => f.tipo === 'esp' ? agregarSeparador(f.v) : agregarFila(f.v));
         recalcular();
@@ -189,16 +192,63 @@
 
     function eliminarFila(btn) { if(confirm("¿Eliminar?")) { btn.closest('tr').remove(); autoGuardar(); } }
 
-    function agregarSeparador(val = "") {
-        let row = document.getElementById("cuerpoTabla").insertRow();
-        row.className = "fila-especialidad";
-        row.innerHTML = `<td colspan="5"><input type="text" oninput="autoGuardar()" value="${val}" placeholder="SECCIÓN"></td><td class="sub-esp" style="text-align:right">$ 0.00</td><td><button class="btn-delete-row" onclick="eliminarFila(this)">×</button></td>`;
+    // Función auxiliar para crear la estructura HTML interna de una Especialidad
+    function HTMLSeparador(val) {
+        return `<td colspan="5"><input type="text" oninput="autoGuardar()" value="${val}" placeholder="SECCIÓN"></td>
+                <td class="sub-esp" style="text-align:right">$ 0.00</td>
+                <td>
+                    <div class="acciones-fila">
+                        <button class="btn-add-here" title="Agregar concepto abajo" onclick="insertarConceptoAbajo(this)">+</button>
+                        <button class="btn-delete-row" onclick="eliminarFila(this)">×</button>
+                    </div>
+                </td>`;
     }
 
+    // Función auxiliar para crear la estructura HTML interna de un Concepto
+    function HTMLFila(v) {
+        return `<td><input type="text" class="table-input" oninput="autoGuardar()" value="${v[0]}"></td>
+                <td><textarea class="concepto-input" oninput="ajustarAltura(this); autoGuardar()">${v[1]}</textarea></td>
+                <td><input type="text" class="table-input" oninput="autoGuardar()" value="${v[2]}"></td>
+                <td><input type="number" class="table-input cant" value="${v[3]}" oninput="autoGuardar()"></td>
+                <td><input type="number" class="table-input precio" value="${v[4]}" oninput="autoGuardar()"></td>
+                <td class="imp">$ 0.00</td>
+                <td>
+                    <div class="acciones-fila">
+                        <button class="btn-add-here" title="Agregar concepto abajo" onclick="insertarConceptoAbajo(this)">+</button>
+                        <button class="btn-delete-row" onclick="eliminarFila(this)">×</button>
+                    </div>
+                </td>`;
+    }
+
+    // Agrega una especialidad al final de la tabla
+    function agregarSeparador(val = "") {
+        let tbody = document.getElementById("cuerpoTabla");
+        let row = tbody.insertRow();
+        row.className = "fila-especialidad";
+        row.innerHTML = HTMLSeparador(val);
+    }
+
+    // Agrega un concepto al final de la tabla
     function agregarFila(v = ["","","","0","0"]) {
-        let row = document.getElementById("cuerpoTabla").insertRow();
-        row.innerHTML = `<td><input type="text" class="table-input" oninput="autoGuardar()" value="${v[0]}"></td><td><textarea class="concepto-input" oninput="ajustarAltura(this); autoGuardar()">${v[1]}</textarea></td><td><input type="text" class="table-input" oninput="autoGuardar()" value="${v[2]}"></td><td><input type="number" class="table-input cant" value="${v[3]}" oninput="autoGuardar()"></td><td><input type="number" class="table-input precio" value="${v[4]}" oninput="autoGuardar()"></td><td class="imp">$ 0.00</td><td><button class="btn-delete-row" onclick="eliminarFila(this)">×</button></td>`;
+        let tbody = document.getElementById("cuerpoTabla");
+        let row = tbody.insertRow();
+        row.innerHTML = HTMLFila(v);
         setTimeout(() => ajustarAltura(row.querySelector('textarea')), 10);
+    }
+
+    // Inserta un concepto NUEVO e vacío inmediatamente debajo de la fila donde se presionó el botón "+"
+    function insertarConceptoAbajo(btn) {
+        let filaActual = btn.closest('tr');
+        
+        // Creamos un elemento 'tr' común y corriente
+        let nuevaFila = document.createElement('tr');
+        nuevaFila.innerHTML = HTMLFila(["","","","0","0"]);
+        
+        // Lo insertamos exactamente después de la fila actual usando la propiedad .after() nativa
+        filaActual.after(nuevaFila);
+        
+        setTimeout(() => ajustarAltura(nuevaFila.querySelector('textarea')), 10);
+        autoGuardar();
     }
 
     function recalcular() {
@@ -268,15 +318,11 @@
             }
         }
 
-        /* AJUSTES AQUÍ: Se incrementó el tamaño de letra del PDF final para impresión */
         doc.autoTable({
-            startY: 100, 
-            head: [['CLAVE', 'CONCEPTO', 'UNIDAD', 'CANT.', 'P. UNIT.', 'IMPORTE']], 
-            body: bodyData,
-            theme: 'grid', 
-            headStyles: { fillColor: [0, 35, 102], fontSize: 11 }, // Subió de 8 a 11
-            styles: { fontSize: 10, overflow: 'linebreak' }, // Subió de 7.5 a 10 para lectura clara
-            columnStyles: { 0:{cellWidth:18}, 4:{halign:'right'}, 5:{halign:'right', fontStyle:'bold'} },
+            startY: 100, head: [['CLAVE', 'CONCEPTO', 'UNIDAD', 'CANT.', 'P. UNIT.', 'IMPORTE']], body: bodyData,
+            theme: 'grid', headStyles: { fillColor: [0, 35, 102], fontSize: 8 },
+            styles: { fontSize: 7.5, overflow: 'linebreak' },
+            columnStyles: { 0:{cellWidth:15}, 4:{halign:'right'}, 5:{halign:'right', fontStyle:'bold'} },
             rowPageBreak: 'auto'
         });
 
@@ -284,11 +330,11 @@
         if (finalY > 210) { doc.addPage(); finalY = 20; }
 
         doc.setFillColor(217, 225, 242); doc.rect(15, finalY, 180, 8, 'F');
-        doc.setFontSize(11); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 35, 102);
+        doc.setFontSize(10); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 35, 102);
         doc.text("RESUMEN DE PARTIDAS", 105, finalY + 6, { align: "center" });
         
         let yRes = finalY + 15;
-        doc.setFontSize(10); doc.setTextColor(0);
+        doc.setFontSize(9); doc.setTextColor(0);
         for(let tr of document.getElementById("cuerpoTabla").rows) {
             if(tr.classList.contains("fila-especialidad")) {
                 let n = tr.querySelector("input").value.toUpperCase();
