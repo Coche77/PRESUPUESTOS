@@ -33,7 +33,6 @@
         th { background: #f8f9fa; color: #002366; padding: 12px; font-size: 11px; border-bottom: 2px solid #002366; text-align: left; }
         td { padding: 10px; border-bottom: 1px solid #eee; vertical-align: top; }
         
-        /* Contenedor de acciones agrupadas */
         .acciones-fila { display: flex; gap: 4px; align-items: center; justify-content: flex-end; opacity: 0.3; transition: 0.3s; }
         tr:hover .acciones-fila { opacity: 1; }
         
@@ -42,6 +41,7 @@
         
         textarea.concepto-input { width: 100%; border: none; background: transparent; font-size: 15px; resize: none; overflow: hidden; min-height: 25px; font-family: inherit; line-height: 1.4; }
         input.table-input { width: 100%; border: none; background: transparent; font-family: inherit; font-size: 14px; }
+        input.clave-autogen { color: #666; font-weight: bold; font-size: 13px; pointer-events: none; }
         .fila-especialidad { background-color: #f1f3f5 !important; }
         .fila-especialidad input { font-weight: bold; color: #002366; text-transform: uppercase; letter-spacing: 1px; width: 100%; font-size: 16px; border: none; background: transparent; }
         .imp { text-align: right; font-weight: bold; font-size: 14px; white-space: nowrap; color: #002366; }
@@ -120,7 +120,7 @@
     <div class="totals-container">
         <div class="notes-area">
             <label style="font-weight: bold; font-size: 12px; color: #002366;">NOTAS ADICIONALES Y CONDICIONES:</label>
-            <textarea id="notasAdicionales" oninput="autoGuardar()" placeholder="Vigencia, tiempos de entrega..."></textarea>
+            <textarea id="notesAdicionales" oninput="autoGuardar()" placeholder="Vigencia, tiempos de entrega..."></textarea>
         </div>
         <div class="totals-box">
             <div class="total-row"><span>SUBTOTAL</span><span id="subtotalDisplay">$ 0.00</span></div>
@@ -164,7 +164,7 @@
             lugar: document.getElementById('lugar').value, fecha: document.getElementById('fecha').value,
             proyecto: document.getElementById('proyecto').value, ubicacion: document.getElementById('ubicacion').value,
             atencion: document.getElementById('atencion').value, intro: document.getElementById('textoIntro').value,
-            notas: document.getElementById('notasAdicionales').value, filas: []
+            notes: document.getElementById('notesAdicionales').value, filas: []
         };
         for (let f of document.getElementById("cuerpoTabla").rows) {
             if (f.classList.contains("fila-especialidad")) {
@@ -184,7 +184,7 @@
         document.getElementById('ubicacion').value = d.ubicacion || "";
         document.getElementById('atencion').value = d.atencion || ""; 
         document.getElementById('textoIntro').value = d.intro || "";
-        document.getElementById('notasAdicionales').value = d.notas || "";
+        document.getElementById('notesAdicionales').value = d.notes || "";
         document.getElementById("cuerpoTabla").innerHTML = "";
         if(d.filas) d.filas.forEach(f => f.tipo === 'esp' ? agregarSeparador(f.v) : agregarFila(f.v));
         recalcular();
@@ -192,9 +192,8 @@
 
     function eliminarFila(btn) { if(confirm("¿Eliminar?")) { btn.closest('tr').remove(); autoGuardar(); } }
 
-    // Función auxiliar para crear la estructura HTML interna de una Especialidad
     function HTMLSeparador(val) {
-        return `<td colspan="5"><input type="text" oninput="autoGuardar()" value="${val}" placeholder="SECCIÓN"></td>
+        return `<td colspan="5"><input type="text" oninput="autoGuardar()" value="${val}" placeholder="SECCIÓN / ESPECIALIDAD (Ej: ELECTRICIDAD)"></td>
                 <td class="sub-esp" style="text-align:right">$ 0.00</td>
                 <td>
                     <div class="acciones-fila">
@@ -204,13 +203,16 @@
                 </td>`;
     }
 
-    // Función auxiliar para crear la estructura HTML interna de un Concepto
     function HTMLFila(v) {
-        return `<td><input type="text" class="table-input" oninput="autoGuardar()" value="${v[0]}"></td>
-                <td><textarea class="concepto-input" oninput="ajustarAltura(this); autoGuardar()">${v[1]}</textarea></td>
-                <td><input type="text" class="table-input" oninput="autoGuardar()" value="${v[2]}"></td>
-                <td><input type="number" class="table-input cant" value="${v[3]}" oninput="autoGuardar()"></td>
-                <td><input type="number" class="table-input precio" value="${v[4]}" oninput="autoGuardar()"></td>
+        // Asegurar que el arreglo tenga datos válidos por defecto para prevenir errores "undefined"
+        let v0 = v[0] || ""; let v1 = v[1] || ""; let v2 = v[2] || "";
+        let v3 = v[3] !== undefined ? v[3] : "0"; let v4 = v[4] !== undefined ? v[4] : "0";
+
+        return `<td><input type="text" class="table-input clave-autogen" oninput="autoGuardar()" value="${v0}" readonly placeholder="---"></td>
+                <td><textarea class="concepto-input" oninput="ajustarAltura(this); autoGuardar()">${v1}</textarea></td>
+                <td><input type="text" class="table-input" oninput="autoGuardar()" value="${v2}"></td>
+                <td><input type="number" class="table-input cant" value="${v3}" oninput="autoGuardar()"></td>
+                <td><input type="number" class="table-input precio" value="${v4}" oninput="autoGuardar()"></td>
                 <td class="imp">$ 0.00</td>
                 <td>
                     <div class="acciones-fila">
@@ -220,7 +222,6 @@
                 </td>`;
     }
 
-    // Agrega una especialidad al final de la tabla
     function agregarSeparador(val = "") {
         let tbody = document.getElementById("cuerpoTabla");
         let row = tbody.insertRow();
@@ -228,7 +229,6 @@
         row.innerHTML = HTMLSeparador(val);
     }
 
-    // Agrega un concepto al final de la tabla
     function agregarFila(v = ["","","","0","0"]) {
         let tbody = document.getElementById("cuerpoTabla");
         let row = tbody.insertRow();
@@ -236,17 +236,11 @@
         setTimeout(() => ajustarAltura(row.querySelector('textarea')), 10);
     }
 
-    // Inserta un concepto NUEVO e vacío inmediatamente debajo de la fila donde se presionó el botón "+"
     function insertarConceptoAbajo(btn) {
         let filaActual = btn.closest('tr');
-        
-        // Creamos un elemento 'tr' común y corriente
         let nuevaFila = document.createElement('tr');
         nuevaFila.innerHTML = HTMLFila(["","","","0","0"]);
-        
-        // Lo insertamos exactamente después de la fila actual usando la propiedad .after() nativa
         filaActual.after(nuevaFila);
-        
         setTimeout(() => ajustarAltura(nuevaFila.querySelector('textarea')), 10);
         autoGuardar();
     }
@@ -256,18 +250,43 @@
         let datosResumen = [];
         const fmt = (v) => v.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
+        let prefijoActual = "CON"; 
+        let contadorConcepto = 0;
+
         for (let f of document.getElementById("cuerpoTabla").rows) {
             if (f.classList.contains("fila-especialidad")) {
                 if (filaE && !esHonEsp) datosResumen.push({ n: (filaE.querySelector("input").value || "S/N").toUpperCase(), m: subE });
                 if (filaE) filaE.querySelector(".sub-esp").innerText = "$ " + fmt(subE);
+                
                 filaE = f; subE = 0;
-                let n = (f.querySelector("input").value || "").toUpperCase();
+                let n = (f.querySelector("input").value || "").trim().toUpperCase();
                 esHonEsp = n.includes("HONO") || n.includes("HONR");
+
+                if (n && !esHonEsp) {
+                    let limpio = n.replace(/[^A-Z0-9]/gi, '');
+                    prefijoActual = limpio.length >= 3 ? limpio.substring(0, 3) : limpio.padEnd(3, 'X');
+                } else if (esHonEsp) {
+                    prefijoActual = "HON";
+                } else {
+                    prefijoActual = "GEN"; 
+                }
+                contadorConcepto = 0; 
+
             } else {
                 let i = f.querySelectorAll("input, textarea");
-                let imp = (parseFloat(i[3].value)||0) * (parseFloat(i[4].value)||0);
+                contadorConcepto++;
+
+                let numProgresivo = String(contadorConcepto).padStart(3, '0');
+                let nuevaClave = `${prefijoActual}-${numProgresivo}`;
+                
+                if (i[0]) i[0].value = nuevaClave;
+
+                let cantVal = i[3] ? parseFloat(i[3].value) : 0;
+                let precVal = i[4] ? parseFloat(i[4].value) : 0;
+                let imp = (cantVal || 0) * (precVal || 0);
+                
                 f.querySelector(".imp").innerText = "$ " + fmt(imp);
-                if (esHonEsp || i[0].value.toUpperCase().includes("HONO") || i[0].value.toUpperCase().includes("HONR")) montoHon += imp;
+                if (esHonEsp || (i[0] && (i[0].value.toUpperCase().includes("HONO") || i[0].value.toUpperCase().includes("HONR")))) montoHon += imp;
                 else totalPartidas += imp;
                 subE += imp;
             }
@@ -313,8 +332,10 @@
                 bodyData.push([{ content: tr.querySelector("input").value.toUpperCase(), colSpan: 5, styles: { fillColor:[240], fontStyle:'bold', halign:'center', textColor:[0,35,102] } }, { content: tr.querySelector(".sub-esp").innerText, styles: { fillColor:[240], fontStyle:'bold', halign:'right' } }]);
             } else {
                 let i = tr.querySelectorAll("input, textarea");
-                let imp = (parseFloat(i[3].value)||0) * (parseFloat(i[4].value)||0);
-                bodyData.push([i[0].value, i[1].value, i[2].value, fmt(parseFloat(i[3].value)||0), "$ "+fmt(parseFloat(i[4].value)||0), "$ "+fmt(imp)]);
+                let cantVal = i[3] ? parseFloat(i[3].value) : 0;
+                let precVal = i[4] ? parseFloat(i[4].value) : 0;
+                let imp = cantVal * precVal;
+                bodyData.push([i[0].value, i[1].value, i[2].value, fmt(cantVal), "$ "+fmt(precVal), "$ "+fmt(imp)]);
             }
         }
 
@@ -322,7 +343,7 @@
             startY: 100, head: [['CLAVE', 'CONCEPTO', 'UNIDAD', 'CANT.', 'P. UNIT.', 'IMPORTE']], body: bodyData,
             theme: 'grid', headStyles: { fillColor: [0, 35, 102], fontSize: 8 },
             styles: { fontSize: 7.5, overflow: 'linebreak' },
-            columnStyles: { 0:{cellWidth:15}, 4:{halign:'right'}, 5:{halign:'right', fontStyle:'bold'} },
+            columnStyles: { 0:{cellWidth:18}, 4:{halign:'right'}, 5:{halign:'right', fontStyle:'bold'} },
             rowPageBreak: 'auto'
         });
 
