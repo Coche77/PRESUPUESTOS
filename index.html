@@ -204,7 +204,6 @@
     }
 
     function HTMLFila(v) {
-        // Asegurar que el arreglo tenga datos válidos por defecto para prevenir errores "undefined"
         let v0 = v[0] || ""; let v1 = v[1] || ""; let v2 = v[2] || "";
         let v3 = v[3] !== undefined ? v[3] : "0"; let v4 = v[4] !== undefined ? v[4] : "0";
 
@@ -369,11 +368,25 @@
         }
 
         finalY = yRes + 10;
-        if (finalY > 240) { doc.addPage(); finalY = 20; }
-        doc.setFont("helvetica", "normal");
+        if (finalY > 230) { doc.addPage(); finalY = 20; }
+        
+        // Renderizar Notas Adicionales (Izquierda)
+        const textoNotas = document.getElementById('notesAdicionales').value;
+        if (textoNotas.trim() !== "") {
+            doc.setFontSize(9); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 35, 102);
+            doc.text("NOTAS ADICIONALES Y CONDICIONES:", 15, finalY);
+            
+            doc.setFont("helvetica", "normal"); doc.setTextColor(60);
+            const lineasNotas = doc.splitTextToSize(textoNotas, 115);
+            doc.text(lineasNotas, 15, finalY + 7);
+        }
+
+        // Renderizar Totales (Derecha)
+        doc.setFont("helvetica", "normal"); doc.setTextColor(0);
         doc.text("SUBTOTAL:", 145, finalY); doc.text(document.getElementById('subtotalDisplay').innerText, 195, finalY, {align:'right'});
         doc.text("HONORARIOS:", 145, finalY + 8); doc.text(document.getElementById('honorariosDisplay').innerText, 195, finalY + 8, {align:'right'});
         doc.text("IVA (16%):", 145, finalY + 16); doc.text(document.getElementById('ivaDisplay').innerText, 195, finalY + 16, {align:'right'});
+        
         doc.setFillColor(0, 35, 102); doc.rect(143, finalY + 20, 55, 10, 'F');
         doc.setTextColor(255); doc.setFont("helvetica", "bold");
         doc.text("TOTAL:", 145, finalY + 26); doc.text(document.getElementById('totalDisplay').innerText, 195, finalY + 26, {align:'right'});
