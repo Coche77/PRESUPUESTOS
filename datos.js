@@ -22,5 +22,11 @@ const CLIENTES_REGISTRADOS = [
         proyecto: "TITOS ALITAS ADICTIVAS",
         ubicacion: "SAN PEDRO GARZA GARCIA,N.L.",
         introduccionn: "A la atención del equipo de TITOS ALITAS ADITIVAS; Presentamos a continuación la propuesta detallada según los requerimientos conversados previamente."
+    },
+    {
+    nombre: "ING. JESUS GONZALEZ",
+        proyecto: "DON COLCHON",
+        ubicacion: "SAN PEDRO GARZA GARCIA,N.L.",
+        introduccionn: "A la atención del equipo de DON COLCHON; Presentamos a continuación la propuesta detallada según los requerimientos conversados previamente."
     }
 ];
