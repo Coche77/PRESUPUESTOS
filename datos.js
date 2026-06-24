@@ -28,5 +28,11 @@ const CLIENTES_REGISTRADOS = [
         proyecto: "DON COLCHON",
         ubicacion: "SAN PEDRO GARZA GARCIA,N.L.",
         introduccionn: "A la atención del equipo de DON COLCHON; Presentamos a continuación la propuesta detallada según los requerimientos conversados previamente."
+    },
+    {
+    nombre: "AVELINO RAMONES",
+        proyecto: "MOLL DEL VALLE",
+        ubicacion: "SAN PEDRO GARZA GARCIA,N.L.",
+        introduccionn: "A la atención del equipo de DON COLCHON; Presentamos a continuación la propuesta detallada según los requerimientos conversados previamente."
     }
 ];
