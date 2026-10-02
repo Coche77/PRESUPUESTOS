@@ -1,0 +1,275 @@
+{
+  "lugar": "San Pedro Garza García, N.L.",
+  "fecha": "08 de julio de 2026",
+  "proyecto": "CASA MONTEROSA - PLAFONES",
+  "ubicacion": "SAN PEDRO GARZA GARCÍA, N.L.",
+  "atencion": "JOSÉ LUIS RAMIREZ",
+  "intro": "Estimado José Luis Ramirez; atendiendo su amable solicitud, presentamos la propuesta técnica y económica correspondiente a los trabajos de panel de yeso, cajillos y pintura para el proyecto Casa Monterosa.",
+  "notes": "Los precios expresados son antes de IVA en M.N. Vigencia del presupuesto: 15 días. Condiciones comerciales: 50% anticipo y 50% avance de obra. No se incluyen permisos ni trámites ante ninguna dependencia. No incluye limpieza gruesa y/o fina, retiros de escombro, refuerzos de herrería (PTR), refuerzos de madera (triplay), branding, tapices, pasta texturizada, señalización ni técnico en seguridad industrial. Solo se consideran las partidas enunciadas en este presupuesto; todo trabajo adicional se cotizará por separado. Este costo estimado refleja la información disponible a la fecha y podrá estar sujeto a cambios una vez que se cuente con el proyecto ejecutivo.",
+  "filas": [
+    {
+      "tipo": "esp",
+      "v": "SÓTANO — PANEL DE YESO"
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "PL-01",
+        "Suministro y fabricación de Plafón Liso, fabricado con una hoja de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, utilizando canaleta de carga cal. 22 @90 cm, canal listón cal. 26 @61 cm, amarres de alambre galvanizado #16, colgantes de alambre galvanizado #12 @90 cm, tornillería para fijación; se considera tratamiento de juntas con perfacinta y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, equipo, herramienta y andamios / escaleras.",
+        "M²",
+        "143.58",
+        "547.47"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "PL-02",
+        "Suministro y fabricación de Plafón Liso, fabricado con una hoja de Panel de Yeso ANTIMOHO de 12.7 mm (1/2\") de espesor, utilizando canaleta de carga cal. 22 @90 cm, canal listón cal. 26 @61 cm, amarres de alambre galvanizado #16, colgantes de alambre galvanizado #12 @90 cm, tornillería para fijación; se considera tratamiento de juntas con perfacinta y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, equipo, herramienta y andamios / escaleras.",
+        "M",
+        "28.77",
+        "585.34"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "A-A",
+        "Cajillo de Iluminación de 30.00 x 20.00 cm, a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, reforzado con bastidor metálico galvanizado Cal. 26; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "4.80",
+        "716.02"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "B-B",
+        "Cajillo para cortinas 25.00 x 25.00 cm, a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, reforzado con bastidor metálico galvanizado Cal. 26; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "11.60",
+        "622.40"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "C-C",
+        "Cajillo decorativo perimetral de 5.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "91.28",
+        "465.75"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "D-D",
+        "Cajillo decorativo perimetral de 5.00 x 10.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "1.80",
+        "498.35"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "E-E",
+        "Cajillo decorativo perimetral 5.00 x 15.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "0",
+        "533.24"
+      ]
+    },
+    {
+      "tipo": "esp",
+      "v": "SÓTANO — PINTURA Y RECUBRIMIENTOS"
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "PINT-001",
+        "Suministro y aplicación de Pintura Vinílica Mca. Sherwin Williams, tono SW 7004 semi-mate, con rodillo a dos manos sobre plafones y cajillos como acabado final; se considera una capa de sellador previamente aplicada. Incluye mano de obra, equipo, herramienta y andamios / escaleras. Se considera acabado mate.",
+        "M²",
+        "209.88",
+        "147.75"
+      ]
+    },
+    {
+      "tipo": "esp",
+      "v": "PLANTA BAJA — PANEL DE YESO"
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "TABR-003",
+        "Suministro y fabricación de Plafón Liso, fabricado con una hoja de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, utilizando canaleta de carga cal. 22 @90 cm, canal listón cal. 26 @61 cm, amarres de alambre galvanizado #16, colgantes de alambre galvanizado #12 @90 cm, tornillería para fijación; se considera tratamiento de juntas con perfacinta y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, equipo, herramienta y andamios / escaleras.",
+        "M²",
+        "156.13",
+        "547.47"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "TABR-004",
+        "Suministro y fabricación de Plafón Liso, fabricado con una hoja de Panel de Yeso ANTIMOHO de 12.7 mm (1/2\") de espesor, utilizando canaleta de carga cal. 22 @90 cm, canal listón cal. 26 @61 cm, amarres de alambre galvanizado #16, colgantes de alambre galvanizado #12 @90 cm, tornillería para fijación; se considera tratamiento de juntas con perfacinta y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, equipo, herramienta y andamios / escaleras.",
+        "M",
+        "0",
+        "585.34"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "A-A",
+        "Cajillo de Iluminación de 30.00 x 20.00 cm, a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, reforzado con bastidor metálico galvanizado Cal. 26; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "15.30",
+        "716.02"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "B-B",
+        "Cajillo para cortinas 25.00 x 25.00 cm, a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, reforzado con bastidor metálico galvanizado Cal. 26; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "13.50",
+        "622.40"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "C-C",
+        "Cajillo decorativo perimetral de 5.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "88.28",
+        "465.75"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "D-D",
+        "Cajillo decorativo perimetral de 5.00 x 10.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "8.05",
+        "498.35"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "E-E",
+        "Cajillo decorativo perimetral 5.00 x 15.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "0",
+        "533.24"
+      ]
+    },
+    {
+      "tipo": "esp",
+      "v": "PLANTA BAJA — PINTURA Y RECUBRIMIENTOS"
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "PINT-001",
+        "Suministro y aplicación de Pintura Vinílica Mca. Sherwin Williams, tono SW 7004 semi-mate, con rodillo a dos manos sobre plafones y cajillos como acabado final; se considera una capa de sellador previamente aplicada. Incluye mano de obra, equipo, herramienta y andamios / escaleras. Se considera acabado mate.",
+        "M²",
+        "207.12",
+        "147.75"
+      ]
+    },
+    {
+      "tipo": "esp",
+      "v": "PLANTA ALTA — PANEL DE YESO"
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "TABR-003",
+        "Suministro y fabricación de Plafón Liso, fabricado con una hoja de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, utilizando canaleta de carga cal. 22 @90 cm, canal listón cal. 26 @61 cm, amarres de alambre galvanizado #16, colgantes de alambre galvanizado #12 @90 cm, tornillería para fijación; se considera tratamiento de juntas con perfacinta y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, equipo, herramienta y andamios / escaleras.",
+        "M²",
+        "211.22",
+        "547.47"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "TABR-004",
+        "Suministro y fabricación de Plafón Liso, fabricado con una hoja de Panel de Yeso ANTIMOHO de 12.7 mm (1/2\") de espesor, utilizando canaleta de carga cal. 22 @90 cm, canal listón cal. 26 @61 cm, amarres de alambre galvanizado #16, colgantes de alambre galvanizado #12 @90 cm, tornillería para fijación; se considera tratamiento de juntas con perfacinta y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, equipo, herramienta y andamios / escaleras.",
+        "M",
+        "19.65",
+        "585.34"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "A-A",
+        "Cajillo de Iluminación de 30.00 x 20.00 cm, a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, reforzado con bastidor metálico galvanizado Cal. 26; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "37.33",
+        "716.02"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "B-B",
+        "Cajillo para cortinas 25.00 x 25.00 cm, a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor, reforzado con bastidor metálico galvanizado Cal. 26; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "19.68",
+        "622.40"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "C-C",
+        "Cajillo decorativo perimetral de 5.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "101.88",
+        "465.75"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "D-D",
+        "Cajillo decorativo perimetral de 5.00 x 10.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "9.25",
+        "498.35"
+      ]
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "E-E",
+        "Cajillo decorativo perimetral 5.00 x 15.00 cm a base de Panel de Yeso Ultralight de 12.7 mm (1/2\") de espesor; se considera suspensión con colgantes galvanizados, perfiles canal y listón, tratamiento de juntas con perfacinta, esquinero flexible perfatrim y compuesto redimix acabado nivel 3. Incluye materiales, mano de obra, retiro de residuos, herramienta, equipo y andamios / escaleras.",
+        "M",
+        "6.65",
+        "533.24"
+      ]
+    },
+    {
+      "tipo": "esp",
+      "v": "PLANTA ALTA — PINTURA Y RECUBRIMIENTOS"
+    },
+    {
+      "tipo": "con",
+      "v": [
+        "PINT-001",
+        "Suministro y aplicación de Pintura Vinílica Mca. Sherwin Williams, tono SW 7004 semi-mate, con rodillo a dos manos sobre plafones y cajillos como acabado final; se considera una capa de sellador previamente aplicada. Incluye mano de obra, equipo, herramienta y andamios / escaleras. Se considera acabado mate.",
+        "M²",
+        "315.64",
+        "147.75"
+      ]
+    }
+  ]
+}
